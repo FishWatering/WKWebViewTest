@@ -14,6 +14,7 @@
 		60FA00EE1C91A4AA00B532E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60FA00ED1C91A4AA00B532E9 /* Assets.xcassets */; };
 		60FA00F11C91A4AA00B532E9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60FA00EF1C91A4AA00B532E9 /* LaunchScreen.storyboard */; };
 		60FA00F91C91A4C200B532E9 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60FA00F81C91A4C200B532E9 /* WebKit.framework */; };
+		60FA01DF1CA133B300B532E9 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 60FA01DE1CA133B300B532E9 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		60FA00F01C91A4AA00B532E9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		60FA00F21C91A4AA00B532E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		60FA00F81C91A4C200B532E9 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		60FA01DE1CA133B300B532E9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +47,7 @@
 		60FA00D51C91A4AA00B532E9 = {
 			isa = PBXGroup;
 			children = (
+				60FA01DE1CA133B300B532E9 /* README.md */,
 				60FA00F81C91A4C200B532E9 /* WebKit.framework */,
 				60FA00E01C91A4AA00B532E9 /* WKWebViewTest */,
 				60FA00DF1C91A4AA00B532E9 /* Products */,
@@ -155,6 +158,7 @@
 			files = (
 				60FA00E91C91A4AA00B532E9 /* ViewController.m in Sources */,
 				60FA00E61C91A4AA00B532E9 /* AppDelegate.m in Sources */,
+				60FA01DF1CA133B300B532E9 /* README.md in Sources */,
 				60FA00E31C91A4AA00B532E9 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

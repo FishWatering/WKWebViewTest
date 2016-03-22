@@ -19,7 +19,7 @@
 
 
 @interface ViewController () <UISearchBarDelegate, WKNavigationDelegate>
-
+/// 搜索栏
 @property (nonatomic, strong) UISearchBar *searchBar;
 /// 网页控制导航栏
 @property (weak, nonatomic) UIView *bottomView;
@@ -52,9 +52,9 @@
     WKWebView *webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height - 20)];
     // 2.创建请求
     NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://www.cnblogs.com/mddblog/"]];
-//    // 3.加载网页
+    // 3.加载网页
     [webView loadRequest:request];
-//    [webView loadFileURL:[NSURL fileURLWithPath:@"/Users/userName/Desktop/bigIcon.png"] allowingReadAccessToURL:[NSURL fileURLWithPath:@"/Users/userName/Desktop/bigIcon.png"]];
+    
     // 最后将webView添加到界面
     [self.view addSubview:webView];
 }
@@ -102,7 +102,7 @@
     [button addTarget:self action:@selector(onBottomButtonsClicled:) forControlEvents:UIControlEventTouchUpInside];
     [self.bottomView addSubview:button];
     self.forwardBtn = button;
-    
+    // 刷新按钮
     button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:@"重新加载" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor colorWithRed:249 / 255.0 green:102 / 255.0 blue:129 / 255.0 alpha:1.0] forState:UIControlStateNormal];
@@ -206,7 +206,64 @@
     }
     decisionHandler(WKNavigationActionPolicyAllow);
 }
-
+- (NSArray *)getImageUrlByJS:(WKWebView *)wkWebView {
+    
+    // js方法遍历图片添加点击事件返回图片个数
+    static  NSString * const jsGetImages =
+    @"function getImages(){\
+    var objs = document.getElementsByTagName(\"img\");\
+    var imgUrlStr='';\
+    for(var i=0;i<objs.length;i++){\
+    if(i==0){\
+    if(objs[i].alt==''){\
+    imgUrlStr=objs[i].src;\
+    }\
+    }else{\
+    if(objs[i].alt==''){\
+    imgUrlStr+='#'+objs[i].src;\
+    }\
+    }\
+    objs[i].onclick=function(){\
+    if(this.alt==''){\
+    document.location=\"myweb:imageClick:\"+this.src;\
+    }\
+    };\
+    };\
+    return imgUrlStr;\
+    };";
+    
+    // 这里只是将代码添加到web？？？
+    [wkWebView evaluateJavaScript:jsGetImages completionHandler:^(id Result, NSError * error) {
+//        NSLog(@"js___Result==%@",Result);
+//        NSLog(@"js___Error -> %@", error);
+    }];
+    
+    // 这里执行？？？
+    NSString *js2=@"getImages()";
+    
+    __block NSArray *array=[NSArray array];
+    [wkWebView evaluateJavaScript:js2 completionHandler:^(id Result, NSError * error) {
+        NSLog(@"js2__Result==%@",Result);
+        NSString *resurlt=[NSString stringWithFormat:@"%@",Result];
+        
+        if([resurlt hasPrefix:@"#"])
+        {
+            resurlt=[resurlt substringFromIndex:1];
+        }
+        array=[resurlt componentsSeparatedByString:@"#"];
+        NSLog(@"array====%@",array);
+    }];
+    
+    return array;
+}
+//- (void)setMethod:(NSArray *)imgUrlArray
+//{
+//    objc_setAssociatedObject(self, &imgUrlArrayKey, imgUrlArray, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+//}
+/// 网页加载完成之后调用
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+    [self getImageUrlByJS:self.wkWebView];
+}
 
 #pragma mark - searchBar代理方法
 /// 点击搜索按钮
@@ -220,6 +277,8 @@
         NSRange range = [urlStr rangeOfString:@"file://"];
         NSString *fileName = [urlStr substringFromIndex:range.length];
         url = [[NSBundle mainBundle] URLForResource:fileName withExtension:nil];
+        // 如果是模拟器加载电脑上的文件，则用下面的代码
+//        url = [NSURL fileURLWithPath:fileName];
     }else if(urlStr.length>0){
         if ([urlStr hasPrefix:@"http://"]) {
             url=[NSURL URLWithString:urlStr];
